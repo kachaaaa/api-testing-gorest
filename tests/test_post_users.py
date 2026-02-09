@@ -1,13 +1,20 @@
+
+import os
 import requests
 from utils.config import BASE_URL
 
-TOKEN = "bc0d8ae96ce40cf4c28e5a99eb39dfcd69106b173024ef3eba2a3f9806cc77e4"  
+TOKEN = os.getenv("GOREST_TOKEN")
 
 def test_create_user_success():
-    payload = {"name": "Test User", "email": "testuser12345@example.com", "gender": "male"}
+    payload = {
+        "name": "Test User",
+        "email": "testuser12345@example.com",
+        "gender": "male"
+    }
     headers = {"Authorization": f"Bearer {TOKEN}"} if TOKEN else {}
     response = requests.post(f"{BASE_URL}/users", json=payload, headers=headers)
-    assert response.status_code in [201, 401, 403]
+
+    assert response.status_code == 201
 
 def test_create_user_empty_name():
     payload = {"name": "", "email": "testuser12345@example.com", "gender": "male"}
